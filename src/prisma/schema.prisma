@@ -1,0 +1,160 @@
+datasource db {
+  url      = env("DATABASE_URL")
+  provider = "postgresql"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+generator nestjsDto {
+  provider                        = "prisma-generator-nestjs-dto"
+  output                          = "../src/generated/prisma"
+  exportRelationModifierClasses   = "false"
+  createDtoPrefix                 = "Create"
+  dtoSuffix                       = "Dto"
+  reExport                        = "false"
+  updateDtoPrefix                 = "Update"
+  outputToNestJsResourceStructure = "true"
+}
+
+model Customer {
+  customerId        Int           @id @default(autoincrement())
+  firstName         String
+  lastName          String
+  email             String        @unique
+  address           String
+  phoneNumber       String
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @default(now()) @updatedAt
+  Auth              Auth[]
+  CustomerRole      CustomerRole[]
+  Shipment          Shipment[]
+  Payment           Payment[]
+  Cart              Cart[]
+  Wishlist          Wishlist[]
+  Order             Order[]
+}
+
+model Auth {
+  authId            Int           @id @default(autoincrement())
+  customerId        Int
+  provider          String
+  providerId        String?
+  passwordHash      String?
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @default(now()) @updatedAt
+  Customer          Customer      @relation(fields: [customerId], references: [customerId])
+}
+
+model Role {
+  roleId            Int           @id @default(autoincrement())
+  name              String
+  CustomerRole      CustomerRole[]
+}
+
+model CustomerRole {
+  customerId        Int
+  roleId            Int
+  Customer          Customer      @relation(fields: [customerId], references: [customerId])
+  Role              Role          @relation(fields: [roleId], references: [roleId])
+  @@id([customerId, roleId])
+}
+
+model Shipment {
+  shipmentId        Int           @id @default(autoincrement())
+  shipmentDate      DateTime
+  address           String
+  city              String
+  state             String
+  country           String
+  zipCode           String
+  customerId        Int
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @default(now()) @updatedAt
+  Customer          Customer      @relation(fields: [customerId], references: [customerId])
+  Order             Order[]
+}
+
+model Payment {
+  paymentId         Int           @id @default(autoincrement())
+  paymentDate       DateTime
+  paymentMethod     String
+  amount            Float
+  customerId        Int
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @default(now()) @updatedAt
+  Customer          Customer      @relation(fields: [customerId], references: [customerId])
+  Order             Order[]
+}
+
+model Category {
+  categoryId        Int           @id @default(autoincrement())
+  name              String
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @default(now()) @updatedAt
+  Product           Product[]
+}
+
+model Product {
+  productId         Int           @id @default(autoincrement())
+  SKU               String
+  description       String
+  price             Float
+  stock             Int
+  categoryId        Int
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @default(now()) @updatedAt
+  Category          Category      @relation(fields: [categoryId], references: [categoryId])
+  Cart              Cart[]
+  Wishlist          Wishlist[]
+  OrderItem         OrderItem[]
+}
+
+model Cart {
+  cartId            Int           @id @default(autoincrement())
+  quantity          Int
+  customerId        Int
+  productId         Int
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @default(now()) @updatedAt
+  Customer          Customer      @relation(fields: [customerId], references: [customerId])
+  Product           Product       @relation(fields: [productId], references: [productId])
+}
+
+model Wishlist {
+  wishlistId        Int           @id @default(autoincrement())
+  customerId        Int
+  productId         Int
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @default(now()) @updatedAt
+  Customer          Customer      @relation(fields: [customerId], references: [customerId])
+  Product           Product       @relation(fields: [productId], references: [productId])
+}
+
+model Order {
+  orderId           Int           @id @default(autoincrement())
+  orderDate         DateTime
+  totalPrice        Float
+  customerId        Int
+  paymentId         Int
+  shipmentId        Int
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @default(now()) @updatedAt
+  Customer          Customer      @relation(fields: [customerId], references: [customerId])
+  Payment           Payment       @relation(fields: [paymentId], references: [paymentId])
+  Shipment          Shipment      @relation(fields: [shipmentId], references: [shipmentId])
+  OrderItem         OrderItem[]
+}
+
+model OrderItem {
+  orderItemId       Int           @id @default(autoincrement())
+  quantity          Int
+  price             Float
+  productId         Int
+  orderId           Int
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @default(now()) @updatedAt
+  Product           Product       @relation(fields: [productId], references: [productId])
+  Order             Order         @relation(fields: [orderId], references: [orderId])
+}
