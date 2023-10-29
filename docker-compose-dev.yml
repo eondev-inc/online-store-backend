@@ -1,38 +1,38 @@
 version: '3.8'
 
 services:
-    db:
-        container_name: postgres-local
+    pgsql-example:
         image: postgres:14.0-alpine
+        container_name: pgsql-example
+        networks:
+            - work
+        ports:
+            - "5432:5432"
+        volumes:
+            - ./volumes/pgsql/datos:/var/lib/postgresql/data
         environment:
             POSTGRES_USER: "admin_store"
             POSTGRES_PASSWORD: "4639802"
             POSTGRES_DB: "ecommerce"
-        ports:
-            - "5432:5432"
-        volumes:
-            - postgres-data:/var/lib/postgresql/data
+        
+    online-store-backend:
+        image: online-store-backend:dev
+        env_file:
+            - .env
+        build:
+            context: ./
+            dockerfile: Dockerfile.dev
+        container_name: online-store-backend
+        command: "yarn start:dev"
         networks:
             - work
-
-    online-store-backend:
-        container_name: online-store-backend
-        build:
-            context: .
-            dockerfile: Dockerfile.dev
-        working_dir: /app
+        volumes:
+            - ./:/app
         ports:
             - "3000:3000"
         depends_on:
-            - db
-        env_file:
-            - .env
-        networks:
-            - work
-    
-
-volumes:
-    postgres-data:
+            - pgsql-example
+        
 networks:
     work:
         driver: bridge
