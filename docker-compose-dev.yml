@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+    db:
+        container_name: postgres-local
+        image: postgres:14.0-alpine
+        environment:
+            POSTGRES_USER: "admin_store"
+            POSTGRES_PASSWORD: "4639802"
+            POSTGRES_DB: "ecommerce"
+        ports:
+            - "5432:5432"
+        volumes:
+            - postgres-data:/var/lib/postgresql/data
+        networks:
+            - work
+
+    online-store-backend:
+        container_name: online-store-backend
+        build:
+            context: .
+            dockerfile: Dockerfile.dev
+        working_dir: /app
+        ports:
+            - "3000:3000"
+        depends_on:
+            - db
+        env_file:
+            - .env
+        networks:
+            - work
+    
+
+volumes:
+    postgres-data:
+networks:
+    work:
+        driver: bridge
+    

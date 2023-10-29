@@ -1,0 +1,14 @@
+FROM node:18-alpine as build-step
+
+WORKDIR /app
+
+COPY . /app
+
+RUN apk update && apk upgrade && \
+    apk add --no-cache bash git openssh
+
+RUN yarn install --frozen-lockfile
+RUN yarn prisma generate
+RUN yarn prisma migrate deploy --preview-feature
+EXPOSE 3000
+CMD ["yarn", "start:dev"]

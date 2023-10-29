@@ -1,0 +1,27 @@
+# Ignore node_modules
+node_modules
+
+# Ignore build output
+dist
+
+# Ignore NestJS debug files
+*.js.map
+
+# Ignore NestJS cache files
+.cache
+
+# Ignore NestJS temporary files
+.tmp
+
+# Ignore NestJS test files
+test
+
+# Ignore NestJS coverage files
+coverage
+
+# Ignore Dockerfile
+Dockerfile
+
+# Ignore Docker Compose files
+docker-compose.yml
+docker-compose.yaml

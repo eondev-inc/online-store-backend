@@ -24,6 +24,7 @@ import { AppConfigService } from './app-config.service';
                 APP_LOCALE: Joi.string().required(),
                 APP_TIMEZONE: Joi.string().required(),
             }),
+            isGlobal: true,
         }),
     ],
     providers: [ConfigService, AppConfigService],
