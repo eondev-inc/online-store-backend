@@ -1,5 +1,11 @@
+
+
+
+
+
+
 export class UpdateAuthDto {
-    provider?: string;
-    providerId?: string;
-    passwordHash?: string;
+  provider?: string;
+providerId?: string;
+passwordHash?: string;
 }

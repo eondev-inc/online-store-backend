@@ -9,7 +9,14 @@ export class HashService {
      * @returns Promise<string>
      */
     async generateHash(password: string): Promise<string> {
-        return await bcrypt.hash(password, 10);
+        try {
+            const salt = await bcrypt.genSalt(10);
+            const hashedPassword = bcrypt.hashSync(password, salt);
+            return hashedPassword;
+        } catch (error) {
+            console.error(error);
+            return null;
+        }
     }
 
     /*

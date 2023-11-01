@@ -10,4 +10,4 @@ RUN apk update && apk upgrade && \
 RUN yarn install --frozen-lockfile
 RUN yarn prisma generate
 EXPOSE 3000
-CMD ["yarn", "start:dev"]
+CMD ["yarn", "start:debug"]

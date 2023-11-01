@@ -47,6 +47,7 @@ services:
             - ./:/app
         ports:
             - "3000:3000"
+            - "9229:9229" # Debug port
         depends_on:
             pgsql-example:
                 condition: service_started
