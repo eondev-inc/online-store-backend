@@ -72,14 +72,15 @@ export class AuthService {
     async registerNewCustomer(customer: CreateCustomerDto) {
         const { email, password } = customer;
         delete customer.password;
-        const existingCustomer: Customer[] =
-            await this.prisma.customer.findMany({
+        const existingCustomer: Customer = await this.prisma.customer.findFirst(
+            {
                 where: {
                     email,
                 },
-            });
+            },
+        );
         this.logger.debug(existingCustomer);
-        if (!existingCustomer) {
+        if (existingCustomer) {
             throw new ConflictException('Email already exists');
         }
         this.logger.log(password);

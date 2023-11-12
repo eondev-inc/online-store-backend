@@ -73,16 +73,7 @@ export class AuthController {
     @HttpCode(200)
     @Post('register')
     @Header('Content-Type', 'application/json')
-    async register(@Req() req): Promise<any> {
-        const customer: CreateCustomerDto = {
-            email: req.body.email,
-            password: req.body.password,
-            firstName: req.body.firstName,
-            lastName: req.body.lastName,
-            address: req.body.address,
-            phoneNumber: req.body.phoneNumber,
-        };
-        this.logger.log(JSON.stringify(customer));
-        return await this._authService.registerNewCustomer(customer);
+    async register(@Body() createcustomer: CreateCustomerDto): Promise<any> {
+        return await this._authService.registerNewCustomer(createcustomer);
     }
 }
