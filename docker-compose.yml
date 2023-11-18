@@ -27,13 +27,14 @@ services:
             POSTGRES_PASSWORD: "4639802"
             POSTGRES_DB: "ecommerce"
         healthcheck:
-            test: ["CMD-SHELL", "pg_isready -U admin_store"]
+            test: ["CMD-SHELL", "pg_isready -U admin_store -d ecommerce"]
             interval: 10s
             timeout: 3s
             retries: 3
         
     online-store-backend:
         image: online-store-backend:dev
+        user: "${UID}:${GID}"
         env_file:
             - .env
         build:

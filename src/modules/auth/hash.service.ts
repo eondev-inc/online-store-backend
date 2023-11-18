@@ -3,20 +3,15 @@ import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class HashService {
+    private saltRounds = 10;
+    private salt = bcrypt.genSaltSync(this.saltRounds);
     /*
      * This method is used to generate a hash from a password
      * @param password string
      * @returns Promise<string>
      */
     async generateHash(password: string): Promise<string> {
-        try {
-            const salt = await bcrypt.genSalt(10);
-            const hashedPassword = bcrypt.hashSync(password, salt);
-            return hashedPassword;
-        } catch (error) {
-            console.error(error);
-            return null;
-        }
+        return await bcrypt.hash(password, this.salt);
     }
 
     /*

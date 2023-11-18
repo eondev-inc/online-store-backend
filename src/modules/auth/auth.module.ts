@@ -4,17 +4,25 @@ import { AuthService } from './auth.service';
 import { PrismaService } from 'src/prisma.service';
 import { HashService } from './hash.service';
 import { JwtModule, JwtService } from '@nestjs/jwt';
-import { JWT_SECRET } from 'src/commons/constans';
+import { AppConfigService } from 'src/commons/config/app/app-config.service';
+import { AppConfig } from 'src/commons/config/app/enums/app-config.enum';
+import { AppConfigModule } from 'src/commons/config/app/app-config.module';
 
 @Module({
     imports: [
-        JwtModule.register({
-            secret: JWT_SECRET,
-            signOptions: { expiresIn: '30d' },
-            global: true,
+        AppConfigModule,
+        JwtModule.registerAsync({
+            useFactory: async (configService: AppConfigService) => ({
+                secret: configService.get(AppConfig.JWT_SECRET),
+                signOptions: {
+                    expiresIn: configService.get(AppConfig.JWT_EXPIRES_IN),
+                },
+            }),
+            imports: [AppConfigModule],
+            inject: [AppConfigService],
         }),
     ],
     controllers: [AuthController],
-    providers: [AuthService, PrismaService, HashService, JwtService],
+    providers: [AuthService, PrismaService, HashService],
 })
 export class AuthModule {}

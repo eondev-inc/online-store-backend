@@ -4,6 +4,7 @@ import * as Joi from 'joi';
 
 import appConfig from './app-config';
 import { AppConfigService } from './app-config.service';
+import { JWT_EXPIRES_IN } from 'src/commons/constans';
 
 /**
  * Import and provide app configuration related classes.
@@ -23,6 +24,8 @@ import { AppConfigService } from './app-config.service';
                 DATABASE_URL: Joi.string().required(),
                 APP_LOCALE: Joi.string().required(),
                 APP_TIMEZONE: Joi.string().required(),
+                JWT_EXPIRES_IN: Joi.string().required(),
+                JWT_SECRET: Joi.string().required(),
             }),
             isGlobal: true,
         }),

@@ -6,16 +6,16 @@ import {
     HttpCode,
     Logger,
     Post,
-    Req,
     Request,
     UseGuards,
+    UseInterceptors,
 } from '@nestjs/common';
 import { LoginDto } from './dto/login.dto';
 import { AuthService } from './auth.service';
-import { ApiBody, ApiProperty, ApiResponse } from '@nestjs/swagger';
+import { ApiBody, ApiProperty } from '@nestjs/swagger';
 import { AuthGuard } from 'src/commons/guards/auth.guard';
-import { CreateCustomerDto } from 'src/prisma/generated/customer/dto/create-customer.dto';
-import { Customer } from 'src/prisma/generated/customer/entities/customer.entity';
+import { CreateCustomer } from './dto/create-customer.dto';
+import { ResponseInterceptor } from 'src/commons/interceptors/index';
 
 @Controller('auth')
 export class AuthController {
@@ -36,6 +36,7 @@ export class AuthController {
             },
         },
     })
+    @UseInterceptors(ResponseInterceptor)
     @Post('login')
     async login(@Body() loginBody: LoginDto) {
         return await this._authService.login(loginBody);
@@ -56,7 +57,7 @@ export class AuthController {
         name: 'Register',
     })
     @ApiBody({
-        type: CreateCustomerDto,
+        type: CreateCustomer,
         examples: {
             registerOne: {
                 value: {
@@ -66,14 +67,15 @@ export class AuthController {
                     address: 'test address',
                     phoneNumber: '123456789',
                     password: 'test',
+                    confirmPassword: 'test',
                 },
             },
         },
     })
-    @HttpCode(200)
+    @HttpCode(201)
     @Post('register')
     @Header('Content-Type', 'application/json')
-    async register(@Body() createcustomer: CreateCustomerDto): Promise<any> {
+    async register(@Body() createcustomer: CreateCustomer): Promise<any> {
         return await this._authService.registerNewCustomer(createcustomer);
     }
 }

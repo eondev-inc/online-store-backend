@@ -9,7 +9,7 @@ import { HashService } from './hash.service';
 import { JwtService } from '@nestjs/jwt';
 import { LoggingConfigService } from 'src/commons/config/logging/logging-config.service';
 import { Customer } from 'src/prisma/generated/customer/entities/customer.entity';
-import { CreateCustomerDto } from 'src/prisma/generated/customer/dto/create-customer.dto';
+import { CreateCustomer } from './dto/create-customer.dto';
 @Injectable()
 export class AuthService {
     private readonly logger = LoggingConfigService.getInstance().getLogger();
@@ -19,11 +19,11 @@ export class AuthService {
         private readonly jwtService: JwtService,
     ) {}
 
-    async login(input: LoginDto) {
-        const user = await this.prisma.auth.findMany({
+    async login({ email, password }: LoginDto) {
+        const user = await this.prisma.auth.findFirst({
             where: {
                 Customer: {
-                    email: input.email,
+                    email: email,
                 },
             },
             select: {
@@ -33,12 +33,12 @@ export class AuthService {
                 Customer: true,
             },
         });
-        if (user.length === 0 || !user) {
+        if (!user) {
             throw new NotFoundException('User not found');
         }
         this.logger.log(user);
         const isUserOk = await this.hashService.compareHash(
-            input.password,
+            password,
             user[0].passwordHash,
         );
 
@@ -47,10 +47,11 @@ export class AuthService {
         }
 
         const payload = {
-            sub: user[0].customerId,
-            email: user[0].Customer.email,
+            sub: user.customerId,
+            email: user.Customer.email,
         };
-        return await this.jwtService.signAsync(payload);
+        const token = await this.jwtService.signAsync(payload);
+        return { token };
     }
     /**
      * Method to get customer profile
@@ -69,9 +70,8 @@ export class AuthService {
         return user;
     }
 
-    async registerNewCustomer(customer: CreateCustomerDto) {
-        const { email, password } = customer;
-        delete customer.password;
+    async registerNewCustomer(customer: CreateCustomer) {
+        const { email, password, confirmPassword } = customer;
         const existingCustomer: Customer = await this.prisma.customer.findFirst(
             {
                 where: {
@@ -79,16 +79,20 @@ export class AuthService {
                 },
             },
         );
-        this.logger.debug(existingCustomer);
         if (existingCustomer) {
             throw new ConflictException('Email already exists');
         }
-        this.logger.log(password);
+        if (password !== confirmPassword) {
+            throw new ConflictException('Passwords do not match');
+        }
         const passwordHash = await this.hashService.generateHash(password);
-        this.logger.log(passwordHash);
         const customerCreated = await this.prisma.customer.create({
             data: {
-                ...customer,
+                firstName: customer.firstName,
+                lastName: customer.lastName,
+                email: customer.email,
+                address: customer.address,
+                phoneNumber: customer.phoneNumber,
                 Auth: {
                     create: {
                         passwordHash,
@@ -97,7 +101,7 @@ export class AuthService {
                 },
             },
             include: {
-                Auth: true,
+                Auth: false,
             },
         });
 

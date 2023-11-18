@@ -7,4 +7,6 @@ export default registerAs('app', () => ({
     databaseUrl: process.env.DATABASE_URL,
     appLocale: process.env.APP_LOCALE,
     appTizone: process.env.APP_TIMEZONE,
+    jwtExpiresIn: process.env.JWT_EXPIRES_IN,
+    jwtSecret: process.env.JWT_SECRET,
 }));
