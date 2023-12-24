@@ -1,17 +1,4 @@
 services:
-    pgadmin:
-        image: dpage/pgadmin4
-        restart: always
-        container_name: nest-pgadmin4
-        environment:
-            - PGADMIN_DEFAULT_EMAIL=admin@admin.com
-            - PGADMIN_DEFAULT_PASSWORD=pgadmin4
-        ports:
-            - '5050:80'
-        depends_on:
-            pgsql-example:
-                condition: service_started
-
     pgsql-example:
         image: postgres:latest
         container_name: pgsql-example
@@ -26,32 +13,25 @@ services:
             POSTGRES_USER: "admin_store"
             POSTGRES_PASSWORD: "4639802"
             POSTGRES_DB: "ecommerce"
-        healthcheck:
-            test: ["CMD-SHELL", "pg_isready -U admin_store -d ecommerce"]
-            interval: 10s
-            timeout: 3s
-            retries: 3
         
     online-store-backend:
         image: online-store-backend:dev
-        user: "${UID}:${GID}"
         env_file:
             - .env
         build:
             context: ./
             dockerfile: Dockerfile.dev
         container_name: online-store-backend
-        command: "yarn start:debug"
+        command: "yarn start:dev"
         networks:
             - work
         volumes:
             - ./:/app
         ports:
-            - "3000:3000"
+            - "3001:3001"
             - "9229:9229" # Debug port
         depends_on:
-            pgsql-example:
-                condition: service_started
+            - pgsql-example
         
 networks:
     work:

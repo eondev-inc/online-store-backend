@@ -3,7 +3,7 @@ import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { PrismaService } from 'src/prisma.service';
 import { HashService } from './hash.service';
-import { JwtModule, JwtService } from '@nestjs/jwt';
+import { JwtModule } from '@nestjs/jwt';
 import { AppConfigService } from 'src/commons/config/app/app-config.service';
 import { AppConfig } from 'src/commons/config/app/enums/app-config.enum';
 import { AppConfigModule } from 'src/commons/config/app/app-config.module';

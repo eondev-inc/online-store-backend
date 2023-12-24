@@ -18,7 +18,12 @@ export class AuthService {
         private readonly hashService: HashService,
         private readonly jwtService: JwtService,
     ) {}
-
+    /**
+     * Method to login user and return token
+     * @param email
+     * @param password
+     * @returns Token
+     */
     async login({ email, password }: LoginDto) {
         const user = await this.prisma.auth.findFirst({
             where: {
@@ -39,7 +44,7 @@ export class AuthService {
         this.logger.log(user);
         const isUserOk = await this.hashService.compareHash(
             password,
-            user[0].passwordHash,
+            user.passwordHash,
         );
 
         if (!isUserOk) {
@@ -69,7 +74,11 @@ export class AuthService {
         }
         return user;
     }
-
+    /**
+     * Method to register a new customer
+     * @param customer
+     * @returns Customer
+     */
     async registerNewCustomer(customer: CreateCustomer) {
         const { email, password, confirmPassword } = customer;
         const existingCustomer: Customer = await this.prisma.customer.findFirst(
