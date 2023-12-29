@@ -1,10 +1,4 @@
-
-
-
-
-
-
 export class UpdateOrderItemDto {
-  quantity?: number;
-price?: number;
+    quantity?: number;
+    price?: number;
 }

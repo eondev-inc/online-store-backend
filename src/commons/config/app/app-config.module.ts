@@ -4,7 +4,6 @@ import * as Joi from 'joi';
 
 import appConfig from './app-config';
 import { AppConfigService } from './app-config.service';
-import { JWT_EXPIRES_IN } from 'src/commons/constans';
 
 /**
  * Import and provide app configuration related classes.

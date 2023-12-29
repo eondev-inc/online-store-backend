@@ -1,9 +1,3 @@
-
-
-
-
-
-
 export class UpdateCartDto {
-  quantity?: number;
+    quantity?: number;
 }

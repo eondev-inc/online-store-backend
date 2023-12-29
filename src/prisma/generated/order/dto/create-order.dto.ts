@@ -1,10 +1,4 @@
-
-
-
-
-
-
 export class CreateOrderDto {
-  orderDate: Date;
-totalPrice: number;
+    orderDate: Date;
+    totalPrice: number;
 }

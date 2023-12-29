@@ -1,5 +1,3 @@
-
-  export class ConnectAuthDto {
+export class ConnectAuthDto {
     authId: number;
-  }
-  
+}

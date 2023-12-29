@@ -1,9 +1,3 @@
-
-
-
-
-
-
 export class CreateCartDto {
-  quantity: number;
+    quantity: number;
 }

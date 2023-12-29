@@ -1,4 +1,3 @@
-import { JWT_EXPIRES_IN, JWT_SECRET } from 'src/commons/constans';
 export enum AppConfig {
     PORT = 'port',
     NODE_ENV = 'nodeEnv',

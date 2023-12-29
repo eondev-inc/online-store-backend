@@ -1,5 +1,3 @@
-
-  export class ConnectProductDto {
+export class ConnectProductDto {
     productId: number;
-  }
-  
+}

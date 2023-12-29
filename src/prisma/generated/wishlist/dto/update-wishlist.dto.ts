@@ -1,9 +1,1 @@
-
-
-
-
-
-
-export class UpdateWishlistDto {
-  
-}
+export class UpdateWishlistDto {}

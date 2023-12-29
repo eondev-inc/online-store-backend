@@ -1,5 +1,1 @@
-
-  export class ConnectCustomerRoleDto {
-    
-  }
-  
+export class ConnectCustomerRoleDto {}

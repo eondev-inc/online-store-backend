@@ -1,5 +1,3 @@
-
-  export class ConnectPaymentDto {
+export class ConnectPaymentDto {
     paymentId: number;
-  }
-  
+}

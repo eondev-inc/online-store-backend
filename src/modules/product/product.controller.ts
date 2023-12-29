@@ -1,6 +1,18 @@
-import { Controller, Get, Param, Post, Body } from '@nestjs/common';
+import {
+    Controller,
+    Get,
+    Param,
+    Post,
+    Body,
+    UploadedFile,
+    UseInterceptors,
+    UseGuards,
+} from '@nestjs/common';
 import { ProductService } from './product.service';
 import { CreateProductInput } from './dto/create-product.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { ReadStream } from 'fs';
+import { AuthGuard } from 'src/commons/guards/auth.guard';
 
 @Controller('product')
 export class ProductController {
@@ -22,5 +34,12 @@ export class ProductController {
     createProduct(@Body() createProductDto: CreateProductInput) {
         // Call the ProductService method to create a new product
         return this._productService.createProduct(createProductDto);
+    }
+
+    @Post('csv')
+    @UseInterceptors(FileInterceptor('text/csv'))
+    createProductsFromCSV(@UploadedFile() file: Express.Multer.File) {
+        // Call the ProductService method to create products from CSV file
+        return this._productService.createProductsFromCSV(file);
     }
 }

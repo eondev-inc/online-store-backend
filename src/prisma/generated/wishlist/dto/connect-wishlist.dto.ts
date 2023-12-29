@@ -1,5 +1,3 @@
-
-  export class ConnectWishlistDto {
+export class ConnectWishlistDto {
     wishlistId: number;
-  }
-  
+}

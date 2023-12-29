@@ -1,9 +1,3 @@
-
-
-
-
-
-
 export class UpdateRoleDto {
-  name?: string;
+    name?: string;
 }

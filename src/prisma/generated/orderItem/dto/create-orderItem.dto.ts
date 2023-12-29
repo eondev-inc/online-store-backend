@@ -1,10 +1,4 @@
-
-
-
-
-
-
 export class CreateOrderItemDto {
-  quantity: number;
-price: number;
+    quantity: number;
+    price: number;
 }

@@ -20,6 +20,7 @@ import { AllExceptionsFilter } from './commons/filters/allExceptions.filter';
 import { AppConfig } from './commons/config/app/enums/app-config.enum';
 import { Settings } from 'luxon';
 import { PrismaService } from './prisma.service';
+import * as fastifyMultipart from 'fastify-multipart';
 async function bootstrap() {
     const app = await NestFactory.create<NestFastifyApplication>(
         AppModule,
@@ -74,6 +75,27 @@ async function bootstrap() {
             { path: 'api/health/readiness', method: RequestMethod.GET },
         ],
     });
+
+    //Definir uso de multipart
+    app.register(fastifyMultipart, {
+        limits: {
+            fileSize: 10000000,
+        },
+    });
+    app.getHttpAdapter()
+        .getInstance()
+        .addContentTypeParser('text/csv', (request, payload, done) => {
+            let csvData = '';
+            payload.on('data', (chunk) => {
+                csvData += chunk;
+            });
+            payload.on('end', () => {
+                done(null, csvData);
+            });
+            payload.on('error', (err) => {
+                done(err, undefined);
+            });
+        });
 
     if (String(process.env.NODE_ENV).toLowerCase() === 'qa') {
         //Swagger UI for documentation

@@ -1,11 +1,5 @@
-
-
-
-
-
-
 export class UpdatePaymentDto {
-  paymentDate?: Date;
-paymentMethod?: string;
-amount?: number;
+    paymentDate?: Date;
+    paymentMethod?: string;
+    amount?: number;
 }

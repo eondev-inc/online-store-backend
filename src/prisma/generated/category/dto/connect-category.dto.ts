@@ -1,5 +1,3 @@
-
-  export class ConnectCategoryDto {
+export class ConnectCategoryDto {
     categoryId: number;
-  }
-  
+}

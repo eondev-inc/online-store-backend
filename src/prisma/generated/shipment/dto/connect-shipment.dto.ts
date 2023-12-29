@@ -1,5 +1,3 @@
-
-  export class ConnectShipmentDto {
+export class ConnectShipmentDto {
     shipmentId: number;
-  }
-  
+}

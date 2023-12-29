@@ -1,11 +1,10 @@
-
-import {Product} from '../../product/entities/product.entity'
-
+import { Product } from '../../product/entities/product.entity';
 
 export class Category {
-  categoryId: number ;
-name: string ;
-createdAt: Date ;
-updatedAt: Date ;
-Product?: Product[] ;
+    categoryId: number;
+    name?: string;
+    description?: string;
+    createdAt?: Date;
+    updatedAt?: Date;
+    Product?: Product[];
 }

@@ -1,5 +1,3 @@
-
-  export class ConnectOrderDto {
+export class ConnectOrderDto {
     orderId: number;
-  }
-  
+}

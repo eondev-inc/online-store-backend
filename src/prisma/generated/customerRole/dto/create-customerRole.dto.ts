@@ -1,9 +1,1 @@
-
-
-
-
-
-
-export class CreateCustomerRoleDto {
-  
-}
+export class CreateCustomerRoleDto {}

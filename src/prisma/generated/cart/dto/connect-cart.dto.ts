@@ -1,5 +1,3 @@
-
-  export class ConnectCartDto {
+export class ConnectCartDto {
     cartId: number;
-  }
-  
+}
