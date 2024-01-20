@@ -20,7 +20,7 @@ import { AllExceptionsFilter } from './commons/filters/allExceptions.filter';
 import { AppConfig } from './commons/config/app/enums/app-config.enum';
 import { Settings } from 'luxon';
 import { PrismaService } from './prisma.service';
-import * as fastifyMultipart from 'fastify-multipart';
+import * as fastifyMultipart from '@fastify/multipart';
 async function bootstrap() {
     const app = await NestFactory.create<NestFastifyApplication>(
         AppModule,
