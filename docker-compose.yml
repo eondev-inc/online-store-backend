@@ -1,14 +1,15 @@
+version: "3.8"
+
 services:
-    pgsql-example:
-        image: postgres:latest
-        container_name: pgsql-example
+    db:
+        image: postgres:16.1-alpine3.19
         restart: always
         networks:
             - work
         ports:
             - "5432:5432"
         volumes:
-            - ./volumes/pgsql/datos:/var/lib/postgresql/data
+            - pgdata:/var/lib/postgresql/data
         environment:
             POSTGRES_USER: "admin_store"
             POSTGRES_PASSWORD: "4639802"
@@ -16,13 +17,14 @@ services:
         
     online-store-backend:
         image: online-store-backend:dev
+        environment:
+            - DATABASE_URL=postgresql://admin_store:4639802@db:5432/ecommerce
         env_file:
             - .env
         build:
             context: ./
             dockerfile: Dockerfile.dev
         container_name: online-store-backend
-        command: "yarn start:dev"
         networks:
             - work
         volumes:
@@ -31,9 +33,10 @@ services:
             - "3001:3001"
             - "9229:9229" # Debug port
         depends_on:
-            - pgsql-example
+            - db
         
 networks:
     work:
         driver: bridge
-    
+volumes:
+    pgdata:

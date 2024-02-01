@@ -1,12 +1,20 @@
-FROM node:20-alpine as builder
-
-WORKDIR /app
-
-COPY . /app
+FROM node:20-alpine
 
 RUN apk update && apk upgrade && \
     apk add --no-cache bash git openssh
 
-RUN yarn install
+RUN addgroup nodeapp && adduser -S -G nodeapp nodeapp
+
+USER nodeapp
+
+WORKDIR /app/
+
+COPY --chown=nodeapp:nodeapp package*.json ./
+
+RUN npm install
+
+COPY --chown=nodeapp:nodeapp . .
+
 EXPOSE 3001 9229
-CMD ["yarn", "start:dev"]
+
+CMD ["npm", "run", "start:dev"]

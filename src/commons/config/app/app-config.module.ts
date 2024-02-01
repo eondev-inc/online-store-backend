@@ -19,7 +19,6 @@ import { AppConfigService } from './app-config.service';
             validationSchema: Joi.object({
                 PORT: Joi.number().required(),
                 NODE_ENV: Joi.string().required(),
-                FASTIFY_ADDRESS: Joi.string().required(),
                 DATABASE_URL: Joi.string().required(),
                 APP_LOCALE: Joi.string().required(),
                 APP_TIMEZONE: Joi.string().required(),

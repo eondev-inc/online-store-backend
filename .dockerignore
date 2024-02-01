@@ -25,3 +25,4 @@ Dockerfile
 # Ignore Docker Compose files
 docker-compose.yml
 docker-compose.yaml
+volumes

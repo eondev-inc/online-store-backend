@@ -6,13 +6,10 @@ import {
     Body,
     UploadedFile,
     UseInterceptors,
-    UseGuards,
 } from '@nestjs/common';
 import { ProductService } from './product.service';
 import { CreateProductInput } from './dto/create-product.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { ReadStream } from 'fs';
-import { AuthGuard } from 'src/commons/guards/auth.guard';
 
 @Controller('product')
 export class ProductController {

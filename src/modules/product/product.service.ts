@@ -73,7 +73,13 @@ export class ProductService {
                         try {
                             const createdProduct =
                                 await this.createProduct(product);
-                            products.push(createdProduct);
+                            products.push({
+                                ...createdProduct,
+                                category: {
+                                    categoryId:
+                                        createdProduct.Category.categoryId,
+                                },
+                            });
                         } catch (error) {
                             reject(error);
                         }
