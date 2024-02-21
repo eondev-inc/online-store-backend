@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from 'src/prisma.service';
+import { PrismaService } from 'nestjs-prisma';
 import { ProductEntity } from './entities/product.entity';
 import { CreateProductInput } from './dto/create-product.dto';
 import { parse } from 'csv-parse';

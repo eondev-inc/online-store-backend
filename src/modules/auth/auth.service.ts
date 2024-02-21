@@ -3,7 +3,7 @@ import {
     Injectable,
     NotFoundException,
 } from '@nestjs/common';
-import { PrismaService } from 'src/prisma.service';
+import { PrismaService } from 'nestjs-prisma';
 import { LoginDto } from './dto/login.dto';
 import { HashService } from './hash.service';
 import { JwtService } from '@nestjs/jwt';

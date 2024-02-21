@@ -7,17 +7,6 @@ generator client {
   provider = "prisma-client-js"
 }
 
-generator nestjsDto {
-  provider                        = "prisma-generator-nestjs-dto"
-  output                          = "./generated"
-  exportRelationModifierClasses   = "false"
-  createDtoPrefix                 = "Create"
-  dtoSuffix                       = "Dto"
-  reExport                        = "false"
-  updateDtoPrefix                 = "Update"
-  outputToNestJsResourceStructure = "true"
-}
-
 model Customer {
   customerId        Int           @id @default(autoincrement())
   firstName         String

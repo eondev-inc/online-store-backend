@@ -19,7 +19,7 @@ import { AppConfigService } from './commons/config/app/app-config.service';
 import { AllExceptionsFilter } from './commons/filters/allExceptions.filter';
 import { AppConfig } from './commons/config/app/enums/app-config.enum';
 import { Settings } from 'luxon';
-import { PrismaService } from './prisma.service';
+import { PrismaClientExceptionFilter, PrismaService } from 'nestjs-prisma';
 import * as fastifyMultipart from '@fastify/multipart';
 async function bootstrap() {
     const app = await NestFactory.create<NestFastifyApplication>(
@@ -34,14 +34,15 @@ async function bootstrap() {
     useContainer(app.select(AppModule), { fallbackOnErrors: true });
 
     //Prisma service S//Prisma Service Setup for avoid bugs on shutting down the API
-    const prismaService: PrismaService = app.get<PrismaService>(PrismaService);
-    await prismaService.enableshutDownHooks(app);
+    //const prismaService: PrismaService = app.get<PrismaService>(PrismaService);
+    //await prismaService.enableshutDownHooks(app);
 
     //Set use global Interceptor
     app.useGlobalInterceptors(new LoggingInterceptor(logger));
 
     // Set use global Filters
     app.useGlobalFilters(new AllExceptionsFilter(httpAdapter));
+    app.useGlobalFilters(new PrismaClientExceptionFilter(httpAdapter));
 
     //Allow class-validator to inject dependencies
     useContainer(app.select(AppModule), { fallbackOnErrors: true });
@@ -97,7 +98,7 @@ async function bootstrap() {
             });
         });
 
-    if (String(process.env.NODE_ENV).toLowerCase() === 'qa') {
+    if (String(process.env.NODE_ENV).toLowerCase() === 'development') {
         //Swagger UI for documentation
         const swaggerConfig = new DocumentBuilder()
             .setTitle('Em Agenda Backend API')

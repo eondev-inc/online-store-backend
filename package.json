@@ -59,6 +59,7 @@
     "joi": "^17.11.0",
     "luxon": "^3.4.4",
     "nest-winston": "^1.9.4",
+    "nestjs-prisma": "^0.23.0",
     "newrelic": "^11.5.0",
     "node-fetch": "3.3.2",
     "passport": "^0.6.0",

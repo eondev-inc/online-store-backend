@@ -28,7 +28,7 @@ services:
         networks:
             - work
         volumes:
-            - ./:/app
+            - ./src:/app/src
         ports:
             - "3001:3001"
             - "9229:9229" # Debug port
