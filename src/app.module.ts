@@ -14,6 +14,7 @@ import {
     QueryInfo,
     loggingMiddleware,
 } from 'nestjs-prisma';
+
 @Module({
     imports: [
         ConfigModule.forRoot(),

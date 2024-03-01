@@ -6,7 +6,7 @@ import {
 import { useContainer } from 'class-validator';
 
 import { AppModule } from './app.module';
-import { RequestMethod, ValidationPipe, VersioningType } from '@nestjs/common';
+import { RequestMethod } from '@nestjs/common';
 import { APP_URL_PREFIX } from './commons/constans';
 import {
     DocumentBuilder,
